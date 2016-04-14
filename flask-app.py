@@ -53,11 +53,27 @@ def get_data():
 
 @app.route('/directory')
 def view_directory():
-    return 'FIXME'
+    student_list = get_data()
+    return render_template('directory.html', students = student_list)
 
 @app.route('/directory/<username>')
 def view_student(username):
-    return 'FIXME'
+    students = get_data()
+    for student in students:
+        if student.username == username:
+            current_student = student
+            student_index = students.index(student)
+            prev = students[student_index - 1]
+            if student != students[-1]:
+                next = students[student_index + 1]
+            if student == students[-1]:
+                next = students[0]
+            if student != students[0]:
+                prev = students[student_index - 1]
+            if student == students[0]:
+                prev = students[-1]
+
+    return render_template('student.html', student = current_student, prev_student = prev, next_student = next)
 
 # DON'T TOUCH THE CODE BELOW THIS LINE
 
